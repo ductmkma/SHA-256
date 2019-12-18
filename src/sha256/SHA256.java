@@ -10,7 +10,7 @@ import java.math.BigInteger;
 
 /**
  *
- * @author anhkma
+ * @author zenter
  */
 public class SHA256 {
 
@@ -46,6 +46,17 @@ public class SHA256 {
         return rotrate_right(a, 17).xor(rotrate_right(a, 19)).xor(shift_right(a, 10));
     }
 
+    private static String sum(BigInteger a, BigInteger n) {
+        String text = "";
+        BigInteger kq = a.add(n).mod(new BigInteger("2").pow(32));
+        text = kq.toString(16);
+        return text;
+    }
+
+    private static BigInteger convert(String a) {
+        return new BigInteger(a, 16);
+    }
+
     public static String SHA256(String message) {
         String H[] = {"6a09e667", "bb67ae85", "3c6ef372", "a54ff53a", "510e527f", "9b05688c", "1f83d9ab", "5be0cd19"};
         String K[] = {"428a2f98", "71374491", "b5c0fbcf", "e9b5dba5", "3956c25b", "59f111f1", "923f82a4", "ab1c5ed5",
@@ -56,7 +67,7 @@ public class SHA256 {
             "a2bfe8a1", "a81a664b", "c24b8b70", "c76c51a3", "d192e819", "d6990624", "f40e3585", "106aa070",
             "19a4c116", "1e376c08", "2748774c", "34b0bcb5", "391c0cb3", "4ed8aa4a", "5b9cca4f", "682e6ff3",
             "748f82ee", "78a5636f", "84c87814", "8cc70208", "90befffa", "a4506ceb", "bef9a3f7", "c67178f2"};
-        String text = padding.Message_pad(message);
+        String text = Utils.paddingMessage(message);
         System.out.println(text);
         int N = text.length() / 512;
         String[][] M = new String[100][100];
@@ -139,17 +150,6 @@ public class SHA256 {
         }
 
         return hash;
-    }
-
-    private static String sum(BigInteger a, BigInteger n) {
-        String text = "";
-        BigInteger kq = a.add(n).mod(new BigInteger("2").pow(32));
-        text = kq.toString(16);
-        return text;
-    }
-
-    private static BigInteger convert(String a) {
-        return new BigInteger(a, 16);
     }
 
 }

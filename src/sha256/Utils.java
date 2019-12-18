@@ -7,9 +7,9 @@ package sha256;
 
 /**
  *
- * @author anhkma
+ * @author zenter
  */
-public class padding {
+public class Utils {
 
     public static String to_Bin(String message) {
         String kq = "";
@@ -27,7 +27,7 @@ public class padding {
 
     }
 
-    public static String Message_pad(String message) {
+    public static String paddingMessage(String message) {
         int len_message = message.length();
         String convert = to_Bin(message);
         convert = convert + "1";
