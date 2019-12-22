@@ -3,8 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sha256;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -17,6 +26,11 @@ public class SHA256_form extends javax.swing.JFrame {
      */
     public SHA256_form() {
         initComponents();
+        radio_m.setSelected(true);
+        txt_file.setEnabled(false);
+        btn_file.setEnabled(false);
+        System.out.println(groupRadio.getSelection().getActionCommand());
+
     }
 
     /**
@@ -28,6 +42,7 @@ public class SHA256_form extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        groupRadio = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         txtmessage = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -36,6 +51,11 @@ public class SHA256_form extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        radio_m = new javax.swing.JRadioButton();
+        radio_f = new javax.swing.JRadioButton();
+        jLabel6 = new javax.swing.JLabel();
+        txt_file = new javax.swing.JTextField();
+        btn_file = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -44,7 +64,7 @@ public class SHA256_form extends javax.swing.JFrame {
         jLabel2.setText("SHA-256: ");
 
         btnenc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lock-icon.png"))); // NOI18N
-        btnenc.setText("Encrypt");
+        btnenc.setText("Hash");
         btnenc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnencActionPerformed(evt);
@@ -62,65 +82,177 @@ public class SHA256_form extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(51, 51, 255));
         jLabel5.setText("Nhóm 4 - Tìm hiểu về hàm băm mật mã SHA");
 
+        groupRadio.add(radio_m);
+        radio_m.setText("Băm thông điệp");
+        radio_m.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radio_mActionPerformed(evt);
+            }
+        });
+
+        groupRadio.add(radio_f);
+        radio_f.setText("Băm File");
+        radio_f.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radio_fActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("File");
+
+        btn_file.setText("Chọn File");
+        btn_file.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_fileActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addComponent(jLabel1))
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtresult, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtmessage, javax.swing.GroupLayout.PREFERRED_SIZE, 540, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(85, 85, 85)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addComponent(txtmessage, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel4)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtresult, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_file, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_file, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(61, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnenc, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(277, 277, 277))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(radio_m)
+                                .addGap(77, 77, 77)
+                                .addComponent(radio_f)))
+                        .addGap(137, 137, 137))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(142, 142, 142))))
+                        .addComponent(btnenc, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(257, 257, 257))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel5)
-                .addGap(34, 34, 34)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(radio_m)
+                    .addComponent(radio_f))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addComponent(jLabel6))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txt_file, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_file, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtmessage, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addGap(18, 18, 18)
+                .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtresult, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtresult, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnenc, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48))
+                .addGap(25, 25, 25))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnencActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnencActionPerformed
-        String hash= SHA256.SHA256(txtmessage.getText());
-        txtresult.setText(hash);
+        if(txtmessage.getText().equals("")){
+            try {
+                MessageDigest md = MessageDigest.getInstance("SHA-256");
+                byte[] hashInBytes;
+                try {
+                    hashInBytes = checksum(txt_file.getText(), md);
+                    txtresult.setText(bytesToHex(hashInBytes));
+                } catch (IOException ex) {
+                    Logger.getLogger(SHA256_form.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(SHA256_form.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            String hash = SHA256.SHA256(txtmessage.getText());
+            txtresult.setText(hash);
+        }
+        
     }//GEN-LAST:event_btnencActionPerformed
+
+    private void radio_mActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radio_mActionPerformed
+        reset();
+        txt_file.setEnabled(false);
+        btn_file.setEnabled(false);
+        txtmessage.setEnabled(true);
+
+    }//GEN-LAST:event_radio_mActionPerformed
+    public void reset(){
+        txtresult.setText("");
+        txtmessage.setText("");
+        txt_file.setText("");
+    }
+    private void btn_fileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_fileActionPerformed
+        JFileChooser chooser = new JFileChooser();
+        int returnVal = chooser.showOpenDialog(null);
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+           txt_file.setText(chooser.getSelectedFile().getPath());
+        }
+    }//GEN-LAST:event_btn_fileActionPerformed
+    private static byte[] checksum(String filepath, MessageDigest md) throws IOException {
+
+        try (DigestInputStream dis = new DigestInputStream(new FileInputStream(filepath), md)) {
+            while (dis.read() != -1) ; //empty loop to clear the data
+            md = dis.getMessageDigest();
+        }
+        return md.digest();
+
+    }
+
+    private static String bytesToHex(byte[] hashInBytes) {
+
+        StringBuilder sb = new StringBuilder();
+        for (byte b : hashInBytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+
+    }
+    private void radio_fActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radio_fActionPerformed
+        reset();
+        txtmessage.setEnabled(false);
+        txt_file.setEnabled(true);
+        btn_file.setEnabled(true);
+    }//GEN-LAST:event_radio_fActionPerformed
 
     /**
      * @param args the command line arguments
@@ -158,12 +290,18 @@ public class SHA256_form extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_file;
     private javax.swing.JButton btnenc;
+    private javax.swing.ButtonGroup groupRadio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JRadioButton radio_f;
+    private javax.swing.JRadioButton radio_m;
+    private javax.swing.JTextField txt_file;
     private javax.swing.JTextField txtmessage;
     private javax.swing.JTextField txtresult;
     // End of variables declaration//GEN-END:variables
